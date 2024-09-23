@@ -1,0 +1,14 @@
+Sistema de estacionamento:
+
+Quando entra um carro no estacionamento o proprietário anota a placa, a marca, o modelo e a hora de entrada do carro.
+Cobra 15 reais por hora.
+
+O Sistema precisa ter:
+
+Cadastro de veículo;
+Verificar a placa;
+Trazer todas as informações do veículo;
+Editar veículo; 
+Deletar veículo;
+Registrar saída do veículo;
+Gerar comprovante;
