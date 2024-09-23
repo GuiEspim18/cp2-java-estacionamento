@@ -4,6 +4,8 @@
  */
 package parkegiro.View;
 
+import parkegiro.View.Login_VIEW;
+
 /**
  *
  * @author labsfiap
@@ -44,7 +46,7 @@ public class SplashScreen_VIEW extends javax.swing.JFrame {
 
                             sleep(100);
 
-//                            new Home().setVisible(true);
+                            new Login_VIEW().setVisible(true);
                             setVisible(false);
                             }
 
@@ -77,11 +79,13 @@ public class SplashScreen_VIEW extends javax.swing.JFrame {
         message = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setUndecorated(true);
 
         mainPanel.setBackground(new java.awt.Color(20, 72, 121));
 
         logo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/parkegiro/Images/logo.png"))); // NOI18N
         logo.setText("  ");
+        logo.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
 
         message.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         message.setForeground(new java.awt.Color(240, 240, 240));
@@ -90,20 +94,22 @@ public class SplashScreen_VIEW extends javax.swing.JFrame {
         mainPanel.setLayout(mainPanelLayout);
         mainPanelLayout.setHorizontalGroup(
             mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, mainPanelLayout.createSequentialGroup()
-                .addContainerGap(76, Short.MAX_VALUE)
+            .addGroup(mainPanelLayout.createSequentialGroup()
+                .addGap(27, 27, 27)
                 .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(logo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(loadingBar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(message, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(65, 65, 65))
+                    .addComponent(message, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(loadingBar, javax.swing.GroupLayout.DEFAULT_SIZE, 344, Short.MAX_VALUE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, mainPanelLayout.createSequentialGroup()
+                        .addComponent(logo)
+                        .addGap(43, 43, 43)))
+                .addContainerGap(31, Short.MAX_VALUE))
         );
         mainPanelLayout.setVerticalGroup(
             mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(mainPanelLayout.createSequentialGroup()
-                .addGap(70, 70, 70)
+                .addGap(63, 63, 63)
                 .addComponent(logo)
-                .addGap(32, 32, 32)
+                .addGap(39, 39, 39)
                 .addComponent(loadingBar, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(message, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -121,7 +127,8 @@ public class SplashScreen_VIEW extends javax.swing.JFrame {
             .addComponent(mainPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
-        pack();
+        setSize(new java.awt.Dimension(402, 300));
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     /**
