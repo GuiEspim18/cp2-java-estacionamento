@@ -4,6 +4,7 @@
  */
 package parkegiro;
 
+import parkegiro.View.Home_VIEW;
 import parkegiro.View.SplashScreen_VIEW;
 
 /**
@@ -17,7 +18,7 @@ public class Parkegiro {
      */
     public static void main(String[] args) {
         // TODO code application logic here
-        new SplashScreen_VIEW().setVisible(true);
+//        new SplashScreen_VIEW().setVisible(true);
+        new Home_VIEW().setVisible(true);
     }
-    
 }
