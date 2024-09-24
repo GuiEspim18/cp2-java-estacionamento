@@ -6,6 +6,7 @@ package parkegiro.Controller;
 
 import java.net.URL;
 import java.sql.*;
+import java.sql.Connection;
 
 /**
  *
@@ -27,9 +28,12 @@ public class Connection_DB {
         }
     }
     
-    public static Connection connection() throws SQLException {
-        Connection con = DriverManager.getConnection(URL, USERNAME, PASSWORD);
-        return con;
+    public static Connection connection() {
+        try {
+            return DriverManager.getConnection(URL, USERNAME, PASSWORD);  
+        } catch(SQLException e) {
+            return null;
+        }
     }
     
 }

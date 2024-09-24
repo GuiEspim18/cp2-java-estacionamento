@@ -14,5 +14,12 @@ public class Entrance_DAO {
     public String brand;
     public String model;
     public String hour;
+
+    public Entrance_DAO(String plate, String brand, String model, String hour) {
+        this.plate = plate;
+        this.brand = brand;
+        this.model = model;
+        this.hour = hour;
+    }
     
 }
