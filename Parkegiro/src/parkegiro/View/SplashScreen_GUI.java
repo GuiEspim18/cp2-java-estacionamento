@@ -4,18 +4,19 @@
  */
 package parkegiro.View;
 
-import parkegiro.View.Login_VIEW;
+import parkegiro.Controller.Connection_DB;
+import parkegiro.View.Login_GUI;
 
 /**
  *
  * @author labsfiap
  */
-public class SplashScreen_VIEW extends javax.swing.JFrame {
+public class SplashScreen_GUI extends javax.swing.JFrame {
 
     /**
      * Creates new form SplashScreen_VIEW
      */
-    public SplashScreen_VIEW() {
+    public SplashScreen_GUI() {
         initComponents();
         new Thread(){
         
@@ -23,37 +24,43 @@ public class SplashScreen_VIEW extends javax.swing.JFrame {
         
         
             for (int i=0; i<101; i++){
-                        try {
-                            sleep(60); 
+                try {
+                    sleep(60); 
 
-                            loadingBar.setValue(i);
+                    loadingBar.setValue(i);
 
-                            if(loadingBar.getValue() == 10){
+                    if(loadingBar.getValue() == 10){
 
-                                message.setText("Fazendo a conexao com o banco de dados");
-//                                driver_conexao.carregardriver();
-                                sleep(100);
-
-
-                            }else if (loadingBar.getValue() <=30){
-                                message.setText("Carregando o sistema");
-                              sleep(50);  
-                            } else if (loadingBar.getValue() <=99){
-                                message.setText("Carregamento quase completo");
-
-                            }else{
-                                message.setText("Carregamento completo. Seu programa sera iniciado.");
-
-                            sleep(100);
-
-                            new Login_VIEW().setVisible(true);
-                            setVisible(false);
-                            }
-
-
-                        } catch (InterruptedException ex) {
-//                            Logger.getLogger(SplashScreen_View.class.getName()).log(Level.SERVE, null, ex);
+                        message.setText("Fazendo a conexao com o banco de dados");
+                        String driver = Connection_DB.connect();
+                        message.setText(driver);
+                        sleep(1000);
+                        if (driver.equals("Driver nao pode ser carregado!\n ou DB Inexistente")) {
+                            System.exit(0);
+                            break;
                         }
+                        sleep(10);
+
+
+                    }else if (loadingBar.getValue() <=30){
+                        message.setText("Carregando o sistema");
+                        sleep(10);  
+                    } else if (loadingBar.getValue() <=99){
+                        message.setText("Carregamento quase completo");
+
+                    }else{
+                        message.setText("Carregamento completo. Seu programa sera iniciado.");
+
+                        sleep(10);
+
+                        new Login_GUI().setVisible(true);
+                        setVisible(false);
+                    }
+
+
+                } catch (InterruptedException ex) {
+//                  Logger.getLogger(SplashScreen_View.class.getName()).log(Level.SERVE, null, ex);
+                }
 
 
 
@@ -148,20 +155,21 @@ public class SplashScreen_VIEW extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(SplashScreen_VIEW.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(SplashScreen_GUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(SplashScreen_VIEW.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(SplashScreen_GUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(SplashScreen_VIEW.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(SplashScreen_GUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(SplashScreen_VIEW.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(SplashScreen_GUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new SplashScreen_VIEW().setVisible(true);
+                new SplashScreen_GUI().setVisible(true);
             }
         });
     }

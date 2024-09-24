@@ -4,10 +4,11 @@
  */
 package parkegiro;
 
+import java.io.File;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
-import parkegiro.View.Home_VIEW;
-import parkegiro.View.SplashScreen_VIEW;
+import parkegiro.View.Home_GUI;
+import parkegiro.View.SplashScreen_GUI;
 
 /**
  *
@@ -19,7 +20,6 @@ public class Parkegiro {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        // TODO code application logic here
         try {
             for (UIManager.LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
                 if ("Nimbus".equals(info.getName())) {
@@ -33,7 +33,7 @@ public class Parkegiro {
         
         // Inicie a aplicação
         java.awt.EventQueue.invokeLater(() -> {
-            new SplashScreen_VIEW().setVisible(true);
+            new SplashScreen_GUI().setVisible(true);
         });
 
     }
