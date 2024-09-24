@@ -4,9 +4,14 @@
  */
 package parkegiro.View;
 
+import java.time.Duration;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import javax.swing.JOptionPane;
 import parkegiro.Model.Entrance.EntranceCRUD_DAO;
 import parkegiro.Model.Entrance.Entrance_DAO;
+import parkegiro.Model.Exit.Exit_DAO;
+import parkegiro.Model.Exit.ExitsCRUD_DAO;
 
 /**
  *
@@ -20,6 +25,7 @@ public class Home_GUI extends javax.swing.JFrame {
     public Home_GUI() {
         initComponents();
         EntranceCRUD_DAO.getAll();
+        ExitsCRUD_DAO.getAll();
     }
 
     /**
@@ -137,6 +143,11 @@ public class Home_GUI extends javax.swing.JFrame {
         exitEntrance.setBackground(new java.awt.Color(20, 72, 121));
         exitEntrance.setForeground(new java.awt.Color(240, 240, 240));
         exitEntrance.setText("Retirar");
+        exitEntrance.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                exitEntranceActionPerformed(evt);
+            }
+        });
 
         editEntrance.setBackground(new java.awt.Color(20, 72, 121));
         editEntrance.setForeground(new java.awt.Color(240, 240, 240));
@@ -469,6 +480,42 @@ public class Home_GUI extends javax.swing.JFrame {
             EntranceCRUD_DAO.delete(plateEntrance.getText());
         }
     }//GEN-LAST:event_deleteEntranceActionPerformed
+
+    private void exitEntranceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exitEntranceActionPerformed
+        int resposta = JOptionPane.showConfirmDialog(
+            this,
+            "Deseja retirar este carro do seu páteo?",
+            "Confirmação",
+            JOptionPane.OK_CANCEL_OPTION
+        );
+        if (resposta == JOptionPane.OK_OPTION) {
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
+            LocalTime currentHours = LocalTime.now();
+            LocalTime entranceHours = LocalTime.parse(hourEntrance.getText(), formatter);
+            
+            Duration duration;
+            if (currentHours.isBefore(entranceHours)) {
+                duration = Duration.between(currentHours, entranceHours);
+            } else {
+                // Caso a hora atual já tenha passado, calcular para o dia seguinte
+                duration = Duration.between(currentHours, entranceHours.plusHours(24));
+            }
+            
+            long horas = duration.toHours();
+            long minutos = duration.toMinutes() % 60;
+            
+            double total = horas + (minutos / 60.0);
+
+            // Multiplicando a diferença de horas por 15
+            if (total < 0) {
+                total = total * -1;
+            }
+            double value = total * 15;
+            
+            Exit_DAO exit = new Exit_DAO(plateEntrance.getText(), brandEntrance.getText(), modelEntrance.getText(), currentHours.format(formatter), value);
+            ExitsCRUD_DAO.create(exit);
+        }
+    }//GEN-LAST:event_exitEntranceActionPerformed
 
     /**
      * @param args the command line arguments

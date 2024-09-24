@@ -38,7 +38,7 @@ public class EntranceCRUD_DAO {
                     insert.execute();
                     JOptionPane.showMessageDialog(null, "\nEntrada adicionada com sucesso!");
                     clearFields();
-                    load();
+                    getAll();
                 } else {
                     JOptionPane.showMessageDialog(null, "\nPreencha todos os campos necessários!", "ERRO!", 0);
                 }
@@ -149,7 +149,7 @@ public class EntranceCRUD_DAO {
     }
     
     
-    private static void clearFields() {
+    public static void clearFields() {
         Home_GUI.plateEntrance.setText("");
         Home_GUI.modelEntrance.setText("");
         Home_GUI.brandEntrance.setText("");
