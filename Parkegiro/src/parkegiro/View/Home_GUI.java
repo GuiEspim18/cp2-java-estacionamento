@@ -19,6 +19,7 @@ public class Home_GUI extends javax.swing.JFrame {
      */
     public Home_GUI() {
         initComponents();
+        EntranceCRUD_DAO.getAll();
     }
 
     /**
@@ -50,7 +51,7 @@ public class Home_GUI extends javax.swing.JFrame {
         getEntrance = new javax.swing.JButton();
         exitsPane = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jTable2 = new javax.swing.JTable();
+        exits = new javax.swing.JTable();
         jLabel5 = new javax.swing.JLabel();
         plateExit = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
@@ -140,10 +141,20 @@ public class Home_GUI extends javax.swing.JFrame {
         editEntrance.setBackground(new java.awt.Color(20, 72, 121));
         editEntrance.setForeground(new java.awt.Color(240, 240, 240));
         editEntrance.setText("Editar");
+        editEntrance.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                editEntranceActionPerformed(evt);
+            }
+        });
 
         deleteEntrance.setBackground(new java.awt.Color(20, 72, 121));
         deleteEntrance.setForeground(new java.awt.Color(240, 240, 240));
         deleteEntrance.setText("Excluir");
+        deleteEntrance.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                deleteEntranceActionPerformed(evt);
+            }
+        });
 
         jLabel4.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel4.setForeground(new java.awt.Color(20, 72, 121));
@@ -152,6 +163,11 @@ public class Home_GUI extends javax.swing.JFrame {
         getEntrance.setBackground(new java.awt.Color(20, 72, 121));
         getEntrance.setForeground(new java.awt.Color(240, 240, 240));
         getEntrance.setText("Consultar");
+        getEntrance.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                getEntranceActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout carsPaneLayout = new javax.swing.GroupLayout(carsPane);
         carsPane.setLayout(carsPaneLayout);
@@ -173,11 +189,11 @@ public class Home_GUI extends javax.swing.JFrame {
                     .addComponent(hourEntrance))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(carsPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(exitEntrance, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(deleteEntrance, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(getEntrance, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(deleteEntrance, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(editEntrance, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(addEntrance, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(addEntrance, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(exitEntrance, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(20, 20, 20))
         );
         carsPaneLayout.setVerticalGroup(
@@ -193,19 +209,19 @@ public class Home_GUI extends javax.swing.JFrame {
                 .addGroup(carsPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(brandEntrance, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel2)
-                    .addComponent(exitEntrance))
+                    .addComponent(getEntrance))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(carsPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
                     .addComponent(modelEntrance, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(getEntrance))
+                    .addComponent(exitEntrance))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(carsPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(deleteEntrance)
                     .addComponent(hourEntrance, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel4))
+                    .addComponent(jLabel4)
+                    .addComponent(editEntrance))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(editEntrance)
+                .addComponent(deleteEntrance)
                 .addGap(0, 15, Short.MAX_VALUE))
         );
 
@@ -213,7 +229,7 @@ public class Home_GUI extends javax.swing.JFrame {
 
         exitsPane.setBackground(new java.awt.Color(240, 240, 240));
 
-        jTable2.setModel(new javax.swing.table.DefaultTableModel(
+        exits.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null},
                 {null, null, null, null, null},
@@ -232,13 +248,13 @@ public class Home_GUI extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane2.setViewportView(jTable2);
-        if (jTable2.getColumnModel().getColumnCount() > 0) {
-            jTable2.getColumnModel().getColumn(0).setResizable(false);
-            jTable2.getColumnModel().getColumn(1).setResizable(false);
-            jTable2.getColumnModel().getColumn(2).setResizable(false);
-            jTable2.getColumnModel().getColumn(3).setResizable(false);
-            jTable2.getColumnModel().getColumn(4).setResizable(false);
+        jScrollPane2.setViewportView(exits);
+        if (exits.getColumnModel().getColumnCount() > 0) {
+            exits.getColumnModel().getColumn(0).setResizable(false);
+            exits.getColumnModel().getColumn(1).setResizable(false);
+            exits.getColumnModel().getColumn(2).setResizable(false);
+            exits.getColumnModel().getColumn(3).setResizable(false);
+            exits.getColumnModel().getColumn(4).setResizable(false);
         }
 
         jLabel5.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
@@ -433,6 +449,27 @@ public class Home_GUI extends javax.swing.JFrame {
         EntranceCRUD_DAO.create(entrance);
     }//GEN-LAST:event_addEntranceActionPerformed
 
+    private void getEntranceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_getEntranceActionPerformed
+        EntranceCRUD_DAO.getOne(plateEntrance.getText());
+    }//GEN-LAST:event_getEntranceActionPerformed
+
+    private void editEntranceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editEntranceActionPerformed
+        Entrance_DAO entrance = new Entrance_DAO(plateEntrance.getText(), brandEntrance.getText(), modelEntrance.getText(), hourEntrance.getText());
+        EntranceCRUD_DAO.update(entrance);
+    }//GEN-LAST:event_editEntranceActionPerformed
+
+    private void deleteEntranceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteEntranceActionPerformed
+        int resposta = JOptionPane.showConfirmDialog(
+            this,
+            "Deseja excluír esta entrada?",
+            "Confirmação",
+            JOptionPane.OK_CANCEL_OPTION
+        );
+        if (resposta == JOptionPane.OK_OPTION) {
+            EntranceCRUD_DAO.delete(plateEntrance.getText());
+        }
+    }//GEN-LAST:event_deleteEntranceActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -473,22 +510,23 @@ public class Home_GUI extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton addEntrance;
-    private javax.swing.JTextField brandEntrance;
-    private javax.swing.JTextField brandExit;
+    public static javax.swing.JTextField brandEntrance;
+    public static javax.swing.JTextField brandExit;
     private javax.swing.JButton cancelExit;
     private javax.swing.JPanel carsPane;
     private javax.swing.JButton deleteEntrance;
     private javax.swing.JButton editEntrance;
     private javax.swing.JButton editExit;
-    private javax.swing.JTable entrances;
+    public static javax.swing.JTable entrances;
     private javax.swing.JToggleButton exit;
     private javax.swing.JButton exitEntrance;
+    public static javax.swing.JTable exits;
     private javax.swing.JPanel exitsPane;
     private javax.swing.JButton getEntrance;
     private javax.swing.JButton getExit;
     private javax.swing.JPanel header;
-    private javax.swing.JTextField hourEntrance;
-    private javax.swing.JTextField hourExit;
+    public static javax.swing.JTextField hourEntrance;
+    public static javax.swing.JTextField hourExit;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel2;
@@ -502,12 +540,11 @@ public class Home_GUI extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTabbedPane jTabbedPane1;
-    private javax.swing.JTable jTable2;
     private javax.swing.JPanel mainPanel;
-    private javax.swing.JTextField modelEntrance;
-    private javax.swing.JTextField modelExit;
-    private javax.swing.JTextField plateEntrance;
-    private javax.swing.JTextField plateExit;
-    private javax.swing.JTextField valueExit;
+    public static javax.swing.JTextField modelEntrance;
+    public static javax.swing.JTextField modelExit;
+    public static javax.swing.JTextField plateEntrance;
+    public static javax.swing.JTextField plateExit;
+    public static javax.swing.JTextField valueExit;
     // End of variables declaration//GEN-END:variables
 }
