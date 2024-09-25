@@ -53,8 +53,8 @@ public class SplashScreen_GUI extends javax.swing.JFrame {
 
                         sleep(10);
 
-//                        new Login_GUI().setVisible(true);
-                        new Home_GUI().setVisible(true);
+                        new Login_GUI().setVisible(true);
+//                        new Home_GUI().setVisible(true);
                         setVisible(false);
                     }
 
