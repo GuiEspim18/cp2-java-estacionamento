@@ -26,4 +26,12 @@ public class Exit_DAO {
         this.price = price;
     }
     
+    public Exit_DAO(String plate, String brand, String model, String hour, Double price) {
+        this.plate = plate;
+        this.brand = brand;
+        this.model = model;
+        this.hour = hour;
+        this.price = price;
+    }
+    
 }

@@ -321,6 +321,12 @@ public class Home_GUI extends javax.swing.JFrame {
         jLabel9.setForeground(new java.awt.Color(20, 72, 121));
         jLabel9.setText("Valor:");
 
+        valueExit.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                valueExitActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout exitsPaneLayout = new javax.swing.GroupLayout(exitsPane);
         exitsPane.setLayout(exitsPaneLayout);
         exitsPaneLayout.setHorizontalGroup(
@@ -503,32 +509,8 @@ public class Home_GUI extends javax.swing.JFrame {
             "Confirmação",
             JOptionPane.OK_CANCEL_OPTION
         );
-        if (resposta == JOptionPane.OK_OPTION) {
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
-            LocalTime currentHours = LocalTime.now();
-            LocalTime entranceHours = LocalTime.parse(hourEntrance.getText(), formatter);
-            
-            Duration duration;
-            if (currentHours.isBefore(entranceHours)) {
-                duration = Duration.between(currentHours, entranceHours);
-            } else {
-                // Caso a hora atual já tenha passado, calcular para o dia seguinte
-                duration = Duration.between(currentHours, entranceHours.plusHours(24));
-            }
-            
-            long horas = duration.toHours();
-            long minutos = duration.toMinutes() % 60;
-            
-            double total = horas + (minutos / 60.0);
-
-            // Multiplicando a diferença de horas por 15
-            if (total < 0) {
-                total = total * -1;
-            }
-            double value = total * 15;
-            
-            Exit_DAO exit = new Exit_DAO(plateEntrance.getText(), brandEntrance.getText(), modelEntrance.getText(), currentHours.format(formatter), entranceHours.format(formatter), value);
-            ExitsCRUD_DAO.create(exit);
+        if (resposta == JOptionPane.OK_OPTION) {          
+            ExitsCRUD_DAO.create(plateEntrance.getText());
         }
     }//GEN-LAST:event_exitEntranceActionPerformed
 
@@ -541,8 +523,13 @@ public class Home_GUI extends javax.swing.JFrame {
     }//GEN-LAST:event_cancelExitActionPerformed
 
     private void editExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editExitActionPerformed
-        // TODO add your handling code here:
+        Exit_DAO exit = new Exit_DAO(plateExit.getText(), brandExit.getText(), modelExit.getText(), hourExit.getText(), Double.parseDouble(valueExit.getText()));
+        ExitsCRUD_DAO.update(exit);
     }//GEN-LAST:event_editExitActionPerformed
+
+    private void valueExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_valueExitActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_valueExitActionPerformed
 
     /**
      * @param args the command line arguments

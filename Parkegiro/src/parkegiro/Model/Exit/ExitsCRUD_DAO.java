@@ -8,6 +8,9 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.Duration;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -20,6 +23,7 @@ import static parkegiro.Model.Entrance.EntranceCRUD_DAO.clearFields;
 import static parkegiro.Model.Entrance.EntranceCRUD_DAO.getAll;
 import parkegiro.Model.Entrance.Entrance_DAO;
 import parkegiro.View.Home_GUI;
+import static parkegiro.View.Home_GUI.hourEntrance;
 
 /**
  *
@@ -29,31 +33,65 @@ public class ExitsCRUD_DAO {
     
     private static List<Exit_DAO> exits = new ArrayList<>();
     
-    public static void create (Exit_DAO data) {
+    public static void create (String plate) {
         Connection connection = Connection_DB.connection();
         if (connection != null) {
-            String sql = "INSERT INTO exits(plate, brand, model, hour, price, entrance_hour) values(?, ?, ?, ?, ?, ?)";
+            String sql = "SELECT * FROM entrance WHERE plate = ?";
             try {
-                if (data.plate.length() > 0 && data.brand.length() > 0 && data.model.length() > 0 && data.hour.length() > 0 && data.price > 0) {
-                    PreparedStatement insert = (PreparedStatement) connection.prepareStatement(sql);
-                    insert.setString(1, data.plate);
-                    insert.setString(2, data.brand);
-                    insert.setString(3, data.model);
-                    insert.setString(4, data.hour);
-                    insert.setString(5, String.valueOf(data.price)); 
-                    insert.setString(6, data.entranceHour);
-                    insert.execute();
-                    
-                    sql = "DELETE FROM entrance WHERE plate = ?";
+                if (plate.length() > 0 ) {
                     PreparedStatement statement = (PreparedStatement) connection.prepareStatement(sql);
-                    statement.setString(1, data.plate);
-                    statement.execute();
+                    statement.setString(1, plate);
+                    ResultSet resultSet = statement.executeQuery();
+                    
+                    while(resultSet.next()) {
+                        sql = "INSERT INTO exits(plate, brand, model, hour, price, entrance_hour) values(?, ?, ?, ?, ?, ?)";
+        
+                        statement = (PreparedStatement) connection.prepareStatement(sql);
+
+                        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
+                        LocalTime currentHours = LocalTime.now();
+                        LocalTime entranceHours = LocalTime.parse(resultSet.getString("hour"), formatter);
+
+
+                        Duration duration;
+                        if (currentHours.isBefore(entranceHours)) {
+                            duration = Duration.between(currentHours, entranceHours);
+                        } else {
+                            // Caso a hora atual já tenha passado, calcular para o dia seguinte
+                            duration = Duration.between(currentHours, entranceHours.plusHours(24));
+                        }
+
+                        long horas = duration.toHours();
+                        long minutos = duration.toMinutes() % 60;
+
+                        double total = horas + (minutos / 60.0);
+
+                        // Multiplicando a diferença de horas por 15
+                        if (total < 0) {
+                            total = total * -1;
+                        }
+                        double value = total * 15;
+
+                        statement.setString(1, plate);
+                        statement.setString(2, resultSet.getString("brand"));
+                        statement.setString(3, resultSet.getString("model"));
+                        statement.setString(4, currentHours.format(formatter));
+                        statement.setString(5, String.valueOf(value)); 
+                        statement.setString(6, resultSet.getString("hour"));
+                        statement.execute();
+
+                        sql = "DELETE FROM entrance WHERE plate = ?";
+                        statement = (PreparedStatement) connection.prepareStatement(sql);
+                        statement.setString(1, plate);
+                        statement.execute();                      
+                    }
+                    
+                    JOptionPane.showMessageDialog(null, "\nSaída adicionada com sucesso!");
                     EntranceCRUD_DAO.getAll();
                     EntranceCRUD_DAO.clearFields();
-                    JOptionPane.showMessageDialog(null, "\nSaída adicionada com sucesso!");
                     getAll();
                 } else {
-                    JOptionPane.showMessageDialog(null, "\nPreencha todos os campos necessários!", "ERRO!", 0);
+                    JOptionPane.showMessageDialog(null, "\nPreencha a placa do carro!", "ERRO!", 0);
                 }
             } catch (NumberFormatException e) {
                 JOptionPane.showMessageDialog(null,"\nErro na inserção!","ERRO!",0);
@@ -93,7 +131,7 @@ public class ExitsCRUD_DAO {
                 EntranceCRUD_DAO.getAll();
                 clearFields();
             } else {
-                JOptionPane.showMessageDialog(null, "\nPreencha todos os campos necessários!", "ERRO!", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(null, "\nPreencha a placa do carro!", "ERRO!", JOptionPane.ERROR_MESSAGE);
             }
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(null, "\nErro ao buscar entradas!", "ERRO!", JOptionPane.ERROR_MESSAGE);
@@ -113,13 +151,13 @@ public class ExitsCRUD_DAO {
             }
             load();
         } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, "\nErro ao buscar entradas!", "ERRO!", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "\nErro ao buscar saídas!", "ERRO!", JOptionPane.ERROR_MESSAGE);
         }
     }
     
     public static void update(Exit_DAO exit) {
         Connection connection = Connection_DB.connection();
-        String sql = "UPDATE exits SET plate = ?, brand = ?, model = ?, hour = ?, value = ? WHERE plate = ?";
+        String sql = "UPDATE exits SET plate = ?, brand = ?, model = ?, hour = ?, price = ? WHERE plate = ?";
         try {
             if (exit.plate.length() > 0) {
                 PreparedStatement statement = (PreparedStatement) connection.prepareStatement(sql);
@@ -132,12 +170,13 @@ public class ExitsCRUD_DAO {
                 statement.execute();
                 getAll();
                 clearFields();
-                JOptionPane.showMessageDialog(null, "\nEntrada editada com sucesso!");  
+                JOptionPane.showMessageDialog(null, "\nSaída editada com sucesso!");  
             } else {
                 JOptionPane.showMessageDialog(null, "\nPreencha todos os campos necessários!", "ERRO!", JOptionPane.ERROR_MESSAGE);
             }
         } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, "\nErro ao buscar entradas!", "ERRO!", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "\nErro ao buscar saídas!", "ERRO!", JOptionPane.ERROR_MESSAGE);
+            e.printStackTrace();
         }
     }
     
@@ -157,10 +196,10 @@ public class ExitsCRUD_DAO {
                 }
                 load();
             } else {
-                JOptionPane.showMessageDialog(null, "\nPreencha todos os campos necessários!", "ERRO!", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(null, "\nPreencha a placa do carro!", "ERRO!", JOptionPane.ERROR_MESSAGE);
             }
         } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, "\nErro ao buscar entradas!", "ERRO!", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "\nErro ao buscar saídas!", "ERRO!", JOptionPane.ERROR_MESSAGE);
         }
     }
     
