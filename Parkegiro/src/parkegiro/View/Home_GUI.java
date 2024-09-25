@@ -293,14 +293,29 @@ public class Home_GUI extends javax.swing.JFrame {
         getExit.setBackground(new java.awt.Color(20, 72, 121));
         getExit.setForeground(new java.awt.Color(240, 240, 240));
         getExit.setText("Consultar");
+        getExit.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                getExitActionPerformed(evt);
+            }
+        });
 
         cancelExit.setBackground(new java.awt.Color(20, 72, 121));
         cancelExit.setForeground(new java.awt.Color(240, 240, 240));
         cancelExit.setText("Cancelar");
+        cancelExit.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cancelExitActionPerformed(evt);
+            }
+        });
 
         editExit.setBackground(new java.awt.Color(20, 72, 121));
         editExit.setForeground(new java.awt.Color(240, 240, 240));
         editExit.setText("Editar");
+        editExit.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                editExitActionPerformed(evt);
+            }
+        });
 
         jLabel9.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel9.setForeground(new java.awt.Color(20, 72, 121));
@@ -512,10 +527,22 @@ public class Home_GUI extends javax.swing.JFrame {
             }
             double value = total * 15;
             
-            Exit_DAO exit = new Exit_DAO(plateEntrance.getText(), brandEntrance.getText(), modelEntrance.getText(), currentHours.format(formatter), value);
+            Exit_DAO exit = new Exit_DAO(plateEntrance.getText(), brandEntrance.getText(), modelEntrance.getText(), currentHours.format(formatter), entranceHours.format(formatter), value);
             ExitsCRUD_DAO.create(exit);
         }
     }//GEN-LAST:event_exitEntranceActionPerformed
+
+    private void getExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_getExitActionPerformed
+        ExitsCRUD_DAO.getOne(plateExit.getText());
+    }//GEN-LAST:event_getExitActionPerformed
+
+    private void cancelExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelExitActionPerformed
+        ExitsCRUD_DAO.cancel(plateExit.getText());
+    }//GEN-LAST:event_cancelExitActionPerformed
+
+    private void editExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editExitActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_editExitActionPerformed
 
     /**
      * @param args the command line arguments

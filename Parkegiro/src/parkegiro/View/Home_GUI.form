@@ -568,6 +568,9 @@
                     </Property>
                     <Property name="text" type="java.lang.String" value="Consultar"/>
                   </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="getExitActionPerformed"/>
+                  </Events>
                 </Component>
                 <Component class="javax.swing.JButton" name="cancelExit">
                   <Properties>
@@ -579,6 +582,9 @@
                     </Property>
                     <Property name="text" type="java.lang.String" value="Cancelar"/>
                   </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cancelExitActionPerformed"/>
+                  </Events>
                 </Component>
                 <Component class="javax.swing.JButton" name="editExit">
                   <Properties>
@@ -590,6 +596,9 @@
                     </Property>
                     <Property name="text" type="java.lang.String" value="Editar"/>
                   </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="editExitActionPerformed"/>
+                  </Events>
                 </Component>
                 <Component class="javax.swing.JLabel" name="jLabel9">
                   <Properties>
